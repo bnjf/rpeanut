@@ -124,6 +124,15 @@ public class Simulate extends JPanel implements ActionListener, KeyListener,
 	private boolean profile = false;
 	private TableColumn profileColumn;
 
+	public void setRegisterView(Word.DisplayType d) {
+		for (int i = 0; i < numReg; i++) {
+			r[i].value.displayType = d;
+		}
+		SP.value.displayType = d;
+		IR.value.displayType = d;
+		SR.value.displayType = d;
+		PC.value.displayType = d;
+	}
 	public Simulate(boolean term, boolean echo, boolean profile) {
 		this.term = term;
 		this.echoInput = echo;

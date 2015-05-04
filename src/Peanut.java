@@ -123,6 +123,9 @@ public class Peanut implements ActionListener, LayoutManager,
 	static final String REDO = "redo";
 	static final String STOP = "stop";
 	static final String SHOWCACHE = "showcache";
+	static final String VIEW_HEX = "view_hex";
+	static final String VIEW_CHR = "view_chr";
+	static final String VIEW_DEC = "view_dec";
 
 	int lastpoke;
 	private static final String FONTSIZE = "editfont";
@@ -147,7 +150,7 @@ public class Peanut implements ActionListener, LayoutManager,
 		prefs = Preferences.userNodeForPackage(Peanut.class);
 		
 		JMenuBar bar;
-		JMenu fileMenu, editMenu, codeMenu;
+		JMenu fileMenu, editMenu, viewMenu, codeMenu;
 		
 		bar = new JMenuBar();
 		
@@ -170,6 +173,11 @@ public class Peanut implements ActionListener, LayoutManager,
 				ActionEvent.CTRL_MASK) );
 		createMenuItem(editMenu,"Change Font Size" ,FONTSIZE , null);
 		
+		viewMenu = new JMenu("View");
+		createMenuItem(viewMenu, "Hexadecimal", VIEW_HEX, null);
+		createMenuItem(viewMenu, "Decimal", VIEW_DEC, null);
+		createMenuItem(viewMenu, "Characters", VIEW_CHR, null);
+
 		codeMenu = new JMenu("Code");
 		createMenuItem(codeMenu,"Assemble" , ASSEMBLE,KeyStroke.getKeyStroke(KeyEvent.VK_B,
 				InputEvent.CTRL_DOWN_MASK) );
@@ -193,6 +201,7 @@ public class Peanut implements ActionListener, LayoutManager,
 		
 		bar.add(fileMenu);
 		bar.add(editMenu);
+		bar.add(viewMenu);
 		bar.add(codeMenu);
 
 		jframe.setJMenuBar(bar);
@@ -298,6 +307,18 @@ public class Peanut implements ActionListener, LayoutManager,
 		} else if (ae.getActionCommand().equals(SHOWCACHE)) {
 			simulate.cache.setVisible(true);
 		}
+
+		// views
+		else if (ae.getActionCommand().equals(VIEW_HEX)) {
+			simulate.setRegisterView(Word.DisplayType.HEX);
+		}
+		else if (ae.getActionCommand().equals(VIEW_DEC)) {
+			simulate.setRegisterView(Word.DisplayType.DECIMAL);
+		}
+		else if (ae.getActionCommand().equals(VIEW_CHR)) {
+			simulate.setRegisterView(Word.DisplayType.CHARACTER);
+		}
+
 	}
 
 	/**

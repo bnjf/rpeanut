@@ -27,6 +27,8 @@ public class Word extends JTextField implements KeyListener {
 	protected int value;
 	static Font wordfont = new Font(Font.MONOSPACED,Font.PLAIN,14);
 	static String str32 = "0x00000000";
+	public enum DisplayType { HEX, DECIMAL, CHARACTER };
+	DisplayType displayType = DisplayType.HEX;
 
 	public Word() {
 		this.addKeyListener(this);
@@ -71,8 +73,24 @@ public class Word extends JTextField implements KeyListener {
 				(add & 0xFFFF)) ;
 	}
 
+	private char charFilter(char c) {
+		return c >= 0x20 && c < 0x7f ? c : '.';
+	}
 	public String toString() {
-		return String.format("0x%04x%04x", 0xffff & (value >> 16), 0xffff & value);
+		switch (displayType) {
+			case HEX:
+				return String.format("0x%04x%04x", 0xffff & (value >> 16), 0xffff & value);
+			case DECIMAL:
+				return String.format("%d", value);
+			case CHARACTER:
+				return String.format("%c%c%c%c",
+					charFilter(Character.toChars( (value >> 24) & 0xff )[0]),
+					charFilter(Character.toChars( (value >> 16) & 0xff )[0]),
+					charFilter(Character.toChars( (value >>  8) & 0xff )[0]),
+					charFilter(Character.toChars( (value      ) & 0xff )[0]));
+			default:
+				return null;
+		}
 	}
 
 	void set(int v) {
